@@ -1,4 +1,6 @@
-interface ERC721TokenReceiver {
+pragma solidity ^0.4.20;
+
+interface IERC721TokenReceiver {
     /// @notice Handle the receipt of an NFT
     /// @dev The ERC721 smart contract calls this function on the
     /// recipient after a `transfer`. This function MAY throw to revert and reject the transfer. Return
@@ -11,4 +13,4 @@ interface ERC721TokenReceiver {
     /// @return `bytes4(keccak256("onERC721Received(address,address,uint256,bytes)"))`
     /// unless throwing
     function onERC721Received(address _operator, address _from, uint256 _tokenId, bytes _data) external returns(bytes4);
-}
+} 

@@ -2,17 +2,16 @@ pragma solidity ^0.4.20;
 
 import "../interfaces/IERC721.sol";
 import "../interfaces/IERC721Receiver.sol";
-import "../../math/SafeMath.sol";
-import "../../utils/Address.sol";
-import "../../introspection/ERC165.sol";
+import "../libs/SafeMath.sol";
+import "../libs/Address.sol";
+import "./ERC165.sol";
 
 /**
  * @title ERC721 Non-Fungible Token Standard basic implementation
  * @dev see https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md
  */
 contract ERC721 is ERC165, IERC721 {
-    using SafeMath for uint;
-    using SafeMath for int;
+    using SafeMath for uint256;
     using Address for address;
 
     // Equals to `bytes4(keccak256("onERC721Received(address,address,uint256,bytes)"))`
@@ -45,7 +44,7 @@ contract ERC721 is ERC165, IERC721 {
      *     bytes4(keccak256('safeTransferFrom(address,address,uint256,bytes)'))
      */
 
-    function ERC721() public {
+    function ERC721 () public {
         // register the supported interfaces to conform to ERC721 via ERC165
         _registerInterface(_INTERFACE_ID_ERC721);
     }
@@ -131,6 +130,7 @@ contract ERC721 is ERC165, IERC721 {
     */
     function transferFrom(address from, address to, uint256 tokenId) public {
         require(_isApprovedOrOwner(msg.sender, tokenId));
+
         _transferFrom(from, to, tokenId);
     }
 

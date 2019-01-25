@@ -1,4 +1,5 @@
 pragma solidity ^0.4.20;
+
 import "./IManaged.sol";
 import "./IERC20.sol";
 
@@ -29,7 +30,6 @@ contract IXToken /* is ERC20*/ is IManaged {
     * @dev This function allows a contract to handle a deposit of ETH on behalf of another user
     */
     function depositTo(address _to) public payable returns (uint tokens); 
-
     function mint(uint amount) public;
     function burn(uint amount) public;
     function withdraw(uint amount, address dest, address _user) public;

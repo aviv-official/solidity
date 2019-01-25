@@ -4,17 +4,14 @@ contract IManaged{
 
     //Event Fired when a manager is added or removed
     event ManagerChange(address manager,bool state);
-    
     event OwnerChange(address owner, bool state);
-
-
-    address owner;
+    address _owner;
 
     mapping(address => bool) managers;
     
 
     modifier owneronly(){
-        require(msg.sender == owner);
+        require(msg.sender == _owner);
         _;
     }
 

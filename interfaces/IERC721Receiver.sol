@@ -1,6 +1,6 @@
 pragma solidity ^0.4.20;
 
-interface IERC721TokenReceiver {
+interface IERC721Receiver {
     /// @notice Handle the receipt of an NFT
     /// @dev The ERC721 smart contract calls this function on the
     /// recipient after a `transfer`. This function MAY throw to revert and reject the transfer. Return

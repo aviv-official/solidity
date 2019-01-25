@@ -78,13 +78,13 @@ contract ERC721 is ERC165, IERC721 {
      * @param to address to be approved for the given token ID
      * @param tokenId uint256 ID of the token to be approved
      */
-    function approve(address to, uint256 tokenId) public {
+    function approve(address to, uint256 tokenId) public payable{
         address owner = ownerOf(tokenId);
         require(to != owner);
         require(msg.sender == owner || isApprovedForAll(owner, msg.sender));
 
         _tokenApprovals[tokenId] = to;
-        emit Approval(owner, to, tokenId);
+        Approval(owner, to, tokenId);
     }
 
     /**
@@ -107,7 +107,7 @@ contract ERC721 is ERC165, IERC721 {
     function setApprovalForAll(address to, bool approved) public {
         require(to != msg.sender);
         _operatorApprovals[msg.sender][to] = approved;
-        emit ApprovalForAll(msg.sender, to, approved);
+        ApprovalForAll(msg.sender, to, approved);
     }
 
     /**
@@ -128,7 +128,7 @@ contract ERC721 is ERC165, IERC721 {
      * @param to address to receive the ownership of the given token ID
      * @param tokenId uint256 ID of the token to be transferred
     */
-    function transferFrom(address from, address to, uint256 tokenId) public {
+    function transferFrom(address from, address to, uint256 tokenId) public payable{
         require(_isApprovedOrOwner(msg.sender, tokenId));
 
         _transferFrom(from, to, tokenId);
@@ -146,7 +146,7 @@ contract ERC721 is ERC165, IERC721 {
      * @param to address to receive the ownership of the given token ID
      * @param tokenId uint256 ID of the token to be transferred
     */
-    function safeTransferFrom(address from, address to, uint256 tokenId) public {
+    function safeTransferFrom(address from, address to, uint256 tokenId) public payable{
         safeTransferFrom(from, to, tokenId, "");
     }
 
@@ -162,7 +162,7 @@ contract ERC721 is ERC165, IERC721 {
      * @param tokenId uint256 ID of the token to be transferred
      * @param _data bytes data to send along with a safe transfer check
      */
-    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data) public {
+    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data) public payable {
         transferFrom(from, to, tokenId);
         require(_checkOnERC721Received(from, to, tokenId, _data));
     }
@@ -200,9 +200,9 @@ contract ERC721 is ERC165, IERC721 {
         require(!_exists(tokenId));
 
         _tokenOwner[tokenId] = to;
-        _ownedTokensCount[to] = _ownedTokensCount[to].add(1);
+        _ownedTokensCount[to] = _ownedTokensCount[to].add(uint(1));
 
-        emit Transfer(address(0), to, tokenId);
+        Transfer(address(0), to, tokenId);
     }
 
     /**
@@ -217,10 +217,10 @@ contract ERC721 is ERC165, IERC721 {
 
         _clearApproval(tokenId);
 
-        _ownedTokensCount[owner] = _ownedTokensCount[owner].sub(1);
+        _ownedTokensCount[owner] = _ownedTokensCount[owner].sub(uint(1));
         _tokenOwner[tokenId] = address(0);
 
-        emit Transfer(owner, address(0), tokenId);
+        Transfer(owner, address(0), tokenId);
     }
 
     /**
@@ -245,12 +245,12 @@ contract ERC721 is ERC165, IERC721 {
 
         _clearApproval(tokenId);
 
-        _ownedTokensCount[from] = _ownedTokensCount[from].sub(1);
-        _ownedTokensCount[to] = _ownedTokensCount[to].add(1);
+        _ownedTokensCount[from] = _ownedTokensCount[from].sub(uint(1));
+        _ownedTokensCount[to] = _ownedTokensCount[to].add(uint(1));
 
         _tokenOwner[tokenId] = to;
 
-        emit Transfer(from, to, tokenId);
+        Transfer(from, to, tokenId);
     }
 
     /**

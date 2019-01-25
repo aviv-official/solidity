@@ -33,4 +33,11 @@ contract IManaged{
         ManagerChange(addr,false);
     }
 
+
+    function changeOwner(address _newOwner) public owneronly{
+        OwnerChange(owner,false);
+        OwnerChange(_newOwner,true);
+        owner = _newOwner;
+    }
+
 }

@@ -30,6 +30,13 @@ contract ERC721 is ERC165, IERC721 {
     // Mapping from owner to operator approvals
     mapping (address => mapping (address => bool)) private _operatorApprovals;
 
+    mapping (uint=>int) internal loc; //Line of credit
+
+    modifier nodebt(uint tokenId) {
+        require(loc[tokenId] >= 0);
+        _;
+    }
+
     bytes4 private constant _INTERFACE_ID_ERC721 = 0x80ac58cd;
     /*
      * 0x80ac58cd ===
@@ -130,7 +137,6 @@ contract ERC721 is ERC165, IERC721 {
     */
     function transferFrom(address from, address to, uint256 tokenId) public payable{
         require(_isApprovedOrOwner(msg.sender, tokenId));
-
         _transferFrom(from, to, tokenId);
     }
 
@@ -162,7 +168,7 @@ contract ERC721 is ERC165, IERC721 {
      * @param tokenId uint256 ID of the token to be transferred
      * @param _data bytes data to send along with a safe transfer check
      */
-    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data) public payable {
+    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data) public payable{
         transferFrom(from, to, tokenId);
         require(_checkOnERC721Received(from, to, tokenId, _data));
     }
@@ -239,7 +245,7 @@ contract ERC721 is ERC165, IERC721 {
      * @param to address to receive the ownership of the given token ID
      * @param tokenId uint256 ID of the token to be transferred
     */
-    function _transferFrom(address from, address to, uint256 tokenId) internal {
+    function _transferFrom(address from, address to, uint256 tokenId) internal nodebt(tokenId) {
         require(ownerOf(tokenId) == from);
         require(to != address(0));
 

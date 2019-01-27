@@ -30,10 +30,10 @@ contract ERC721 is ERC165, IERC721 {
     // Mapping from owner to operator approvals
     mapping (address => mapping (address => bool)) private _operatorApprovals;
 
-    mapping (uint=>int) internal loc; //Line of credit
+    mapping (uint=>int) internal balance; //Line of credit
 
     modifier nodebt(uint tokenId) {
-        require(loc[tokenId] >= 0);
+        require(balance[tokenId] >= 0);
         _;
     }
 

@@ -11,15 +11,15 @@ contract IEstate /* is ERC721Full */{
     //Mint new Estates
     function mint(uint qty, address dest) public;
     //Credit funds to an Estate
-    function credit(uint tokenId) public;
+    function credit(uint tokenId) public payable;
     //Debit funds from an Estate
     function debit(uint tokenId, uint amount) public;
     //Return the current LOC for a token
     function tokenBalance(uint tokenId) public view returns (int);
     //Set a proxy for an Estate
-    function setProxy(uint tokenId, address agent) public;
+    function setAgent(uint tokenId, address agent) public;
     //Get the current proxy agent for an Estate
-    function getProxy(uint tokenId) public view returns (address agent);
+    function getAgent(uint tokenId) public view returns (address agent);
     //Get a list of all tokens proxied to agent
     function getProxies(address agent) public view returns (uint[] proxied);
 }

@@ -22,4 +22,6 @@ contract IEstate /* is ERC721Full */{
     function getAgent(uint tokenId) public view returns (address agent);
     //Get a list of all tokens proxied to agent
     function getProxies(address agent) public view returns (uint[] proxied);
+    //Get a list of tokens proxied that have a positive balance
+    function getLiveProxies(address agent) public view returns (uint[] proxied);
 }

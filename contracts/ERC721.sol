@@ -30,13 +30,6 @@ contract ERC721 is ERC165, IERC721 {
     // Mapping from owner to operator approvals
     mapping (address => mapping (address => bool)) private _operatorApprovals;
 
-    mapping (uint=>int) internal balance; //Line of credit
-
-    modifier nodebt(uint tokenId) {
-        require(balance[tokenId] >= 0);
-        _;
-    }
-
     bytes4 private constant _INTERFACE_ID_ERC721 = 0x80ac58cd;
     /*
      * 0x80ac58cd ===
@@ -245,7 +238,7 @@ contract ERC721 is ERC165, IERC721 {
      * @param to address to receive the ownership of the given token ID
      * @param tokenId uint256 ID of the token to be transferred
     */
-    function _transferFrom(address from, address to, uint256 tokenId) internal nodebt(tokenId) {
+    function _transferFrom(address from, address to, uint256 tokenId) internal{
         require(ownerOf(tokenId) == from);
         require(to != address(0));
 

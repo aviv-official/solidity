@@ -7,23 +7,31 @@ import "./IERC721.sol";
 contract IManaged{
 
     //Event Fired when a manager is added or removed
-    event ManagerChange(address manager,bool state);
-    event OwnerChange(address owner, bool state);
+    event ManagerChanged(address manager,bool state);
+    event OwnerChanged(address owner);
+    event TrustChanged(address trust);
     event ContractReplaced(address indexed replacement);
-    event ContractLocked(bool state);
+    event ContractLocked(bool indexed state);
 
     address internal _owner;
+    address internal _trust;
+
     bool internal _locked = false;
 
     mapping(address => bool) managers;
     
+    modifier trustonly(){
+        require(msg.sender == _trust || msg.sender == _owner);
+        _;
+    }
+
     modifier owneronly(){
         require(msg.sender == _owner);
         _;
     }
 
     modifier managed(){
-        require(managers[msg.sender]);
+        require(managers[msg.sender] || msg.sender == _owner || msg.sender == _trust);
         _;
     }
 
@@ -37,19 +45,24 @@ contract IManaged{
         _;
     }
 
+    function setTrust(address addr) public{
+        require(msg.sender == _trust || msg.sender == _owner);
+        _trust = addr;
+        TrustChanged(addr);
+    }
+
     function addManager(address addr) public owneronly{
         managers[addr] = true;
-        ManagerChange(addr,true);
+        ManagerChanged(addr,true);
     }
 
     function removeManager(address addr) public managed{
         managers[addr] = false;
-        ManagerChange(addr,false);
+        ManagerChanged(addr,false);
     }
 
     function changeOwner(address _newOwner) public owneronly{
-        OwnerChange(_owner,false);
-        OwnerChange(_newOwner,true);
+        OwnerChanged(_newOwner);
         _owner = _newOwner;
         addManager(_newOwner);
     }
@@ -68,7 +81,7 @@ contract IManaged{
         return _locked;
     }
     //Used to kill the contract and forward funds to a replacement contract, this is owner only
-    function replace(address dest) public owneronly locked{
+    function replace(address dest) public trustonly locked{
         ContractReplaced(dest);
         selfdestruct(dest);
     }

@@ -5,4 +5,4 @@ contract IXAV {
     function burn(uint amount) public;
     function withdraw(uint amount, address dest, address _user) public;
     function depositTo(address _to) public payable returns (uint tokens);
-}
+} 

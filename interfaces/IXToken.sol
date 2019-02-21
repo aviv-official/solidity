@@ -90,8 +90,9 @@ contract IXToken is IManaged /*,IERC20*/{
     * in most cases they just emit 
     * Deposit(address source, uint amount);
     */
-    function() public payable;
-
+    function() public payable{
+        Deposit(msg.sender, msg.value);
+    }
     
     /**
     * @dev set the AwardRights contract 
